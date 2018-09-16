@@ -13,13 +13,18 @@ const seedDB = (userData, topicsData, articlesData, commentsData) => {
     ])
     .then(([userDocs, topicDocs]) => {
       return Promise.all([
+       userDocs,
+       topicDocs, 
        Article.insertMany(formatArticleData(articlesData, userDocs, topicDocs)),
-       userDocs
       ])
     })
-    .then(([articleDocs, userDocs]) => {
-      //return Promise.all (['send out all of the docs'])
-     return Comments.insertMany(formatCommentData(commentsData, userDocs, articleDocs))
+    .then(([userDocs, topicDocs, articleDocs]) => {
+     return Promise.all ([
+     userDocs,
+     topicDocs, 
+     articleDocs, 
+     Comments.insertMany(formatCommentData(commentsData, userDocs, articleDocs))
+    ])
     })       
   })
 };

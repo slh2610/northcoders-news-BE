@@ -1,6 +1,9 @@
 const router = require('express').Router();
-const {getTopics, getArticleByTopicSlug, addArticleByTopicSlug, getArticles, getArticleId, getCommentsByArticleId, getUsers, getUsername, addCommentsByArticleId, changeVotes, getComments, getCommentById, updateCommentVotes, deleteComments} = require('../controllers/index.js')
-
+const {getTopics, getArticleByTopicSlug, addArticleByTopicSlug} = require('../controllers/topics.js')
+const {getArticles, getArticleId, getCommentsByArticleId, addCommentsByArticleId, changeVotes, } = require('../controllers/articles.js')
+const {getComments, getCommentById, updateCommentVotes, deleteComments} = require('../controllers/comments.js')
+const {getUsers, getUsername} = require('../controllers/users.js')
+ 
 router.route('/topics')
 .get(getTopics)
 
@@ -18,7 +21,7 @@ router.route('/articles/:article_id')
 router.route('/articles/:article_id/comments')
 .get(getCommentsByArticleId)
 .post(addCommentsByArticleId)
-
+,
 router.route('/comments')
 .get(getComments)
 

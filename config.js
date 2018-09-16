@@ -1,8 +1,8 @@
-const NODE_ENV = process.env.NoDE_ENV || 'deveopment'
+const NODE_ENV = process.env.NODE_ENV || 'development'
 
-consfig = {
-  development: 'mongodb:localhost etc.',
-  test: 'same as above but with _test afterwards'
+const config = {
+  development: 'mongodb://localhost:27017/nc_news',
+  test: 'mongodb://localhost:27017/nc_news_test_file'
 }
 
-module.exports = conifg[NODE_ENV];
+module.exports = config[NODE_ENV];
