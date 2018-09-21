@@ -5,11 +5,12 @@ const apiRouter = require('./routes/api')
 const bodyParser = require('body-parser')
 const { handle404s, handle400s, handle500s } = require('./errors/index.js')
 
-const DB_URL = require('./config')
+const DB_URL = process.env.DB_URL || require('./config')
 
 app.use(bodyParser.json())
 
 mongoose.connect(DB_URL)
+  .then(() => console.log(`Connected to ${DB_URL}`))
   .catch(console.log)
 
 app.use('/api', apiRouter);
