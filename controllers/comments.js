@@ -46,4 +46,12 @@ const deleteComments = (req, res, next) => {
   .catch(next)
 }
 
-module.exports = {getComments, getCommentById, updateCommentVotes, deleteComments}
+const getCommentCount = (article, Comments) => {
+  return Comments.countDocuments({ belongs_to: article._id })
+    .then(commentCount => {
+      article.comment_count = commentCount;
+      return article;
+  })
+};
+
+module.exports = {getComments, getCommentById, updateCommentVotes, deleteComments, getCommentCount}

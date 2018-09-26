@@ -1,21 +1,23 @@
 const { Article, Comments, } = require('../models')
+const { getCommentCount } = require ('./comments.js')
 
 const getArticles = (req, res, next) => {
-  Article.find()
+  Article.find({}, '-__v')
   .populate('created_by', ['name', 'username', 'avatar_url'])
-  .then(articles => {
-    res.status(200).send({ articles })
-  })
+  .lean()
+  .then(articles => Promise.all(articles.map(article => getCommentCount(article, Comments))))
+  .then(articles => res.status(200).send({ articles }))
   .catch(next)
-}
+};
 
 const getArticleId = (req, res, next) => {
   const articleId = req.params.article_id
   Article.findById(articleId)
   .populate('created_by', ['name', 'username', 'avatar_url'])
+  .lean()
+  .then(article => (getCommentCount(article, Comments)))
   .then(article => {
-    if(!article) throw { msg: 'Not Found', status: 404 }
-    res.send({article})
+    res.status(200).send({ article })
   })
   .catch(next)
 }
@@ -45,9 +47,6 @@ const getCommentsByArticleId = (req, res, next) => {
   const articleId = req.params.article_id
   Comments.find({belongs_to: articleId})
   .populate('belongs_to', ['title', 'body', 'votes', 'created_by'])
-  // .count({belongs_to: articleId}), function(count) {
-  //   console.log(count)
-  // }
    .then(comment => {
     if(comment.length === 0) throw { msg: 'Not Found', status: 404 }
     res.status(200).send({comment})
@@ -66,5 +65,6 @@ Comments.create(req.body)
 
 
 
-module.exports = { getArticles, getArticleId, getCommentsByArticleId, addCommentsByArticleId, changeVotes}
+
+module.exports = { getArticles, getArticleId, getCommentsByArticleId, addCommentsByArticleId, changeVotes }
 

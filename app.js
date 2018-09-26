@@ -15,12 +15,12 @@ mongoose.connect(DB_URL)
 
 app.use('/api', apiRouter);
 
-app.get('/*', (req, res, next) => {
-  res.status(404).send('Page Not Found')
+app.get('/api', (req, res, next) => {
+  res.status(200).send('Welcome to the homepage')
 })
 
-app.get('/api', (err, req, res) => {
-  res.status(200).send('Welcome to the homepage')
+app.get('/*', (req, res, next) => {
+  res.status(404).send('Page Not Found')
 })
 
 app.use(handle404s);

@@ -1,4 +1,5 @@
-const { Topic, Article } = require('../models')
+const { Topic, Article, Comments } = require('../models')
+const { getCommentCount } = require ('./comments.js')
 
 const getTopics = (req, res, next) => {
   Topic.find()
@@ -11,9 +12,12 @@ const getTopics = (req, res, next) => {
 const getArticleByTopicSlug = (req, res, next) => {
   const topicSlug = req.params.topic_slug;
   Article.find({ belongs_to : topicSlug})
-  .then(article => {
-     if(article.length === 0) throw { msg: 'Not Found', status: 404}
-    res.status(200).send({ article })
+  .populate('created_by', ['name', 'username', 'avatar_url'])
+  .lean()
+  .then(articles => Promise.all(articles.map(article => getCommentCount(article, Comments))))
+  .then(articles => {
+     if(articles.length === 0) throw { msg: 'Not Found', status: 404}
+    res.status(200).send({ articles })
   })
   .catch(next)
 }
