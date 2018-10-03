@@ -3,11 +3,14 @@ const mongoose = require('mongoose');
 const app = express();
 const apiRouter = require('./routes/api')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const { handle404s, handle400s, handle500s } = require('./errors/index.js')
 
 const DB_URL = process.env.DB_URL || require('./config.js')
 
 app.use(bodyParser.json())
+
+app.use(cors())
 
 mongoose.connect(DB_URL)
   .then(() => console.log(`Connected to ${DB_URL}`))

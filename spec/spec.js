@@ -29,7 +29,7 @@ describe('/api', () => {
     return request.get(`/api/topics/${topics[0].slug}/articles`)
       .expect(200)
       .then(res => {
-        expect(res.body.article[0].belongs_to).to.equal(topics[0].slug)   
+        expect(res.body.articles[0].belongs_to).to.equal(topics[0].slug)   
        })
       }) 
     it('/:topic_slug/articles - GET an invalid topic_slug returns error message and 404 status code', () => {
@@ -56,7 +56,7 @@ describe('/api', () => {
          .send({ "body": "This is my new article content", "created_by": "5b9ab6c19f86e16cdcf7636a" })
           .expect(400)
            .then(res => {
-            expect(res.body.msg).to.equal('Bad Request')
+            expect(res.body.msg).to.equal('articles validation failed: title: Path `title` is required.')
           })
        })
     })
@@ -128,7 +128,7 @@ describe('/api', () => {
         .send({ "created_by": "5b9b87ceed324f1a4ce8eb06" })
          .expect(400)
           .then(res => {
-           expect(res.body.msg).to.equal('Bad Request')
+           expect(res.body.msg).to.equal('comments validation failed: body: Path `body` is required.')
          })
        })
      })
