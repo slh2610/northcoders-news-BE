@@ -4,7 +4,7 @@ Northcoders News is an API containing articles, article comments, user data and 
 
 ### Prerequisites
 
-This API has the following dev dependencies:
+Northcoders News uses the following dev dependencies:
 
 chai
 mocha
@@ -17,7 +17,7 @@ body-parser
 express
 mongoose
 
-To install all dependencies run "npm install" in the command line
+run "npm install" to install all dependencies.
 
 ### Database
 
